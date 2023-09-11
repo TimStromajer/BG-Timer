@@ -20,7 +20,7 @@
 <dialog class="settings-dialog" id="setting-dialog">
     <h4>Settings</h4>
     <input type="number" bind:value={$startTimerValue}>
-    <button class="dialog-cancel-btn" on:click={() => settingDialog.close()}>X</button>
+    <button class="dialog-cancel-btn" on:click={() => settingDialog.close()}>Confirm</button>
 </dialog>
 
 <style>

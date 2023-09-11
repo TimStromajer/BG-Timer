@@ -6,6 +6,9 @@
     let timerText = $startTimerValue;
     let intervalID;
 
+    let audio
+    let src = "./gta-v-death-sound-effect.mp3"
+
     onMount(() => {
 		$startTimerValue = 5
 	})
@@ -14,6 +17,7 @@
         timerText += seconds;
         if (timerText <= 0) {
             stopTimer()
+            audio.play()
             timerStatus = "over"
         }
     }
@@ -50,6 +54,10 @@
         </div>
     {/if}
 </button>
+
+<audio src={src} bind:this={audio}></audio>
+
+
 
 <style>
     .timer-btn {
