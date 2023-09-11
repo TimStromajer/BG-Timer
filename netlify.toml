@@ -1,6 +1,5 @@
 [build]
   publish = "dist/BG-Timer"
-  functions = "functions"
 
 [functions]
   node_bundler = "esbuild"
