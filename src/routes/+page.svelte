@@ -35,15 +35,20 @@
 </script>
 
 <button class="timer-btn" on:click={() => resetTimer()}>
-    <div class="timer-text">
-        {#if timerStatus == "over"}
+    
+    {#if timerStatus == "over"}
+        <div class="timer-text-over">
             WASTED
-        {:else if timerStatus == "running"}
+        </div>
+    {:else if timerStatus == "running"}
+        <div class="timer-text-running">
             {timerText}
-        {:else if timerStatus == "stopped"}
-            {timerText} (stopped)
-        {/if}
-    </div>
+        </div>
+    {:else if timerStatus == "stopped"}
+        <div class="timer-text-stopped">
+            {timerText}
+        </div>
+    {/if}
 </button>
 
 <style>
@@ -54,7 +59,15 @@
         top: 0;
         bottom: 0;
     }
-    .timer-text {
+    .timer-text-running {
         font-size: 7em;
+    }
+    .timer-text-stopped {
+        font-size: 7em;
+        color: rgb(184, 184, 184);
+    }
+    .timer-text-over {
+        font-size: 5em;
+        color: red;
     }
 </style>
