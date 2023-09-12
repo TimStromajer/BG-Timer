@@ -8,8 +8,8 @@
     let innerHeight = 0
 
     onMount(() => {
-        $startTimerValue = 111
-        $timerNumber = 2
+        $startTimerValue = 15
+        $timerNumber = 1
         $timers = []
 
         for (let i = 0; i<$timerNumber; i++) {
