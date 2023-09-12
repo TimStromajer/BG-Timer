@@ -1,81 +1,65 @@
 <script>
     import { onMount } from "svelte";
-    import {startTimerValue} from "../stores/timerSettings"
 
-    let timerStatus = "stopped"
-    let timerText = $startTimerValue;
-    let intervalID;
+	import Timer from "./timer.svelte";
+    import { timers, startTimerValue, timerNumber, resetTimers, stopTimers } from "../stores/timerSettings";
 
-    let audio
-    let src = "./gta-v-death-sound-effect.mp3"
+    let innerWidth = 0
+    let innerHeight = 0
 
     onMount(() => {
-		$startTimerValue = 5
-	})
+        $startTimerValue = 111
+        $timerNumber = 2
+        $timers = []
 
-    function changeTimer(seconds) {
-        timerText += seconds;
-        if (timerText <= 0) {
-            stopTimer()
-            audio.play()
-            timerStatus = "over"
+        for (let i = 0; i<$timerNumber; i++) {
+            $timers.push({i: {"message": null}})
+        }
+    })
+
+    $: $timerNumber, timerNumberChange()
+    $: $resetTimers, resetTimersFunc()
+    $: $stopTimers, stopAllTimers()
+
+    function timerNumberChange() {
+        $timers = []
+        for (let i = 0; i<$timerNumber; i++) {
+            $timers.push({i: {"message": null}})
         }
     }
-
-    function startTimer() {
-        intervalID = setInterval(changeTimer, 1000, -1)
+    async function resetTimersFunc() {
+        if ($resetTimers) {
+            await stopAllTimers()
+            await resetAllTimers()
+        }
+        $resetTimers = null 
     }
-
-    function resetTimer() {
-        timerStatus = "running"
-        timerText = $startTimerValue;
-        stopTimer()
-        startTimer()
+    function stopAllTimers() {
+        for (let i = 0; i < $timerNumber; i++) {
+            $timers[i]["message"] = "stop"
+        }
+        $stopTimers = null
     }
-
-    function stopTimer() {
-        if (intervalID) clearInterval(intervalID)
+    function resetAllTimers() {
+        for (let i = 0; i < $timerNumber; i++) {
+            $timers[i]["message"] = "reset"
+        }
     }
 </script>
 
-<button class="timer-btn" on:click={() => resetTimer()}>
-    
-    {#if timerStatus == "over"}
-        <div class="timer-text-over">
-            WASTED
-        </div>
-    {:else if timerStatus == "running"}
-        <div class="timer-text-running">
-            {timerText}
-        </div>
-    {:else if timerStatus == "stopped"}
-        <div class="timer-text-stopped">
-            {timerText}
-        </div>
-    {/if}
-</button>
+<svelte:window bind:innerWidth bind:innerHeight />
 
-<audio src={src} bind:this={audio}></audio>
-
-
+{#if $timers}
+    {#each $timers as timer, i}
+        <div class="timer-div" style="--screenHeight:{innerHeight}px; --timerNumber:{$timers.length}">
+            <Timer timerId={i}></Timer>
+        </div>
+    {/each}
+{/if}
 
 <style>
-    .timer-btn {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-    }
-    .timer-text-running {
-        font-size: 7em;
-    }
-    .timer-text-stopped {
-        font-size: 7em;
-        color: rgb(184, 184, 184);
-    }
-    .timer-text-over {
-        font-size: 5em;
-        color: red;
+    .timer-div {
+        position: relative;
+        height: calc(var(--screenHeight) / var(--timerNumber));
     }
 </style>
