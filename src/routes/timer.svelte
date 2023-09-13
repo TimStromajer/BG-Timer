@@ -42,6 +42,7 @@
       if (timerText <= 0) {
           stopTimer()
           audio.play()
+          audio.currentTime = 0.4
           timer["timerStatus"] = "over"
       }
   }
@@ -84,11 +85,11 @@
 </script>
 
 {#if timer}
-<button class="timer-btn" on:click={() => timerClick()}>
+<button class="timer-btn" class:wasted={timer["timerStatus"] == "over"} on:click={() => timerClick()}>
   
   {#if timer["timerStatus"] == "over"}
       <div class="timer-text-over">
-          WASTED
+          wasted
       </div>
   {:else if timer["timerStatus"] == "running"}
       <div class="timer-text-running">
@@ -108,6 +109,7 @@
 
 <style>
   .timer-btn {
+      background-color: rgb(168, 209, 247);
       position: absolute;
       left: 0;
       right: 0;
@@ -124,5 +126,34 @@
   .timer-text-over {
       font-size: 5em;
       color: red;
+      font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-weight: 800;
+      -webkit-text-stroke-width: 1px;
+      -webkit-text-stroke-color: black;
+      text-shadow: 0 0 6px #000000, 0 0 10px #000000;
+
+      animation-name: showText;
+      animation-duration: 4s;
+      animation-fill-mode: forwards;
+  }
+  .wasted {
+      animation-name: fade;
+      animation-duration: 3s;
+      animation-fill-mode: forwards;
+  }
+
+  @keyframes fade {
+    100% {background-color: rgb(68, 68, 68);}
+  }
+  @keyframes showText {
+    0% {
+      visibility: hidden;
+    }
+    50% {
+      visibility: hidden;
+    }
+    60% {
+      visibility: visible;
+    }
   }
 </style>
