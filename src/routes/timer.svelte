@@ -82,6 +82,23 @@
     }
     $timers[nextId]["message"] = "start"
   }
+
+  function formatTimer(seconds_) {
+    let minutes = 0
+    if (seconds_ >= 60) {
+      minutes = Math.floor(seconds_ / 60)
+    }
+    let seconds = (seconds_%60).toFixed(2)
+
+    if (minutes == 0) {
+      return seconds
+    }
+    else if (seconds < 10 ) {
+      seconds = "0" + seconds
+    }
+
+    return minutes + ":" + seconds
+  }
 </script>
 
 {#if timer}
@@ -93,19 +110,17 @@
       </div>
   {:else if timer["timerStatus"] == "running"}
       <div class="timer-text-running">
-          {timerText != null ? timerText.toFixed(2) : ""}
+          {timerText != null ? formatTimer(timerText) : ""}
       </div>
   {:else if timer["timerStatus"] == "stopped"}
       <div class="timer-text-stopped">
-          {timerText != null ? timerText.toFixed(2) : ""}
+          {timerText != null ? formatTimer(timerText) : ""}
       </div>
   {/if}
 </button>
 {/if}
 
 <audio src={src} bind:this={audio}></audio>
-
-
 
 <style>
   .timer-btn {
@@ -128,9 +143,8 @@
       color: red;
       font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       font-weight: 800;
-      -webkit-text-stroke-width: 1px;
-      -webkit-text-stroke-color: black;
-      text-shadow: 0 0 6px #000000, 0 0 10px #000000;
+
+      text-shadow: 0 0 8px #000000, 0 0 10px #000000;
 
       animation-name: showText;
       animation-duration: 4s;
