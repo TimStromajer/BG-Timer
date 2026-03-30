@@ -63,7 +63,9 @@
   }
 
   function timerClick() {
-      stopTimer()
+      if (timer["timerStatus"] != "over") {
+        stopTimer()
+      }
       if ($timers.length == 1) {
         timerText = $startTimerValue;
         startTimer()
