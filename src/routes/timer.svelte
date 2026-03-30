@@ -48,6 +48,10 @@
   }
 
   function startTimer() {
+      if (timerText <= 0) {
+        startNextTimer()
+        return;
+      }
       intervalID = setInterval(changeTimer, 100, -0.1)
       timer["intervalID"] = intervalID
       timer["timerStatus"] = "running"
