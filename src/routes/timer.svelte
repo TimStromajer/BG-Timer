@@ -48,7 +48,7 @@
   }
 
   function startTimer() {
-      if (timerText <= 0) {
+      if (timer["timerStatus"] == "over") {
         startNextTimer()
         return;
       }
