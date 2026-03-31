@@ -82,7 +82,7 @@
   function startNextTimer() {
   	for (var j = timerId+1; j != timerId; j++) {
   		if (j == $timers.length) j = 0;
-  		if ($timers[j]["timerStatus"] != over) {
+  		if ($timers[j]["timerStatus"] != "over") {
   			$timers[j]["message"] = "start"
   			return;
   		}
